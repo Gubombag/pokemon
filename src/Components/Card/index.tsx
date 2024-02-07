@@ -1,11 +1,6 @@
 import React from "react";
 import {Container, Li, Ul} from "./styles"
 import axios from "axios";
-import { url } from "inspector";
-
-type DataPokemonProps = {
-    api: string;
-}
 
 const Card = () => {
     
