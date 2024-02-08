@@ -19,6 +19,10 @@ const Card = () => {
         console.log(error);
         })
       }
+
+const handle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+}
     
 React.useEffect(() => {
     fetchData()
