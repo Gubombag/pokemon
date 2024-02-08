@@ -12,8 +12,8 @@ const Card = () => {
         axios
         .get("https://pokeapi.co/api/v2/pokemon/zapdos")
         .then((response) => {
-        setLoading(false)
         setData(response.data)
+        setLoading(false)
         })
         .catch((error) => {
         console.log(error);
