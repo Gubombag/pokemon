@@ -10,13 +10,13 @@ const Card = () => {
         axios
         .get("https://pokeapi.co/api/v2/pokemon/zapdos")
         .then((response) => {
-        const species = []
-        species.push(response.data.species.back_default)
-        species.push(response.data.species.back_shiny)
-        species.push(response.data.species.front_default)
-        species.push(response.data.species.front_shiny)
-        setData(species)
-        console.log(species)
+        const sprites = []
+        sprites.push(response.data.sprites.back_default)
+        sprites.push(response.data.sprites.back_shiny)
+        sprites.push(response.data.sprites.front_default)
+        sprites.push(response.data.sprites.front_shiny)
+        setData(sprites)
+        console.log(sprites)
         })
         .catch((error) => {
         console.error(error);
