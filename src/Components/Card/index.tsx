@@ -4,18 +4,24 @@ import axios from "axios";
 
 const Card = () => {
     
-      const [data, setData] = React.useState()
+    const [data, setData] = React.useState<any>()
       
-      const fetchData = () => {
+    const fetchData = () => {
         axios
         .get("https://pokeapi.co/api/v2/pokemon/zapdos")
         .then((response) => {
-        setData(response.data)
+        const species = []
+        species.push(response.data.species.back_default)
+        species.push(response.data.back_shiny)
+        species.push(response.data.front_default)
+        species.push(response.data.front_shiny)
+        setData(species)
+        console.log(species)
         })
         .catch((error) => {
-        console.log(error);
+        console.error(error);
         })
-      }
+    }
     
 React.useEffect(() => {
     fetchData()
@@ -25,7 +31,7 @@ React.useEffect(() => {
         <>
             <Container>
                 <Ul>
-                    <Li>{JSON.stringify(data)}</Li>
+                    <Li>{data}</Li>
                 </Ul>
             </Container>
         </>
