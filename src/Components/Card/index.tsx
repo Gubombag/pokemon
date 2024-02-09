@@ -12,9 +12,9 @@ const Card = () => {
         .then((response) => {
         const species = []
         species.push(response.data.species.back_default)
-        species.push(response.data.back_shiny)
-        species.push(response.data.front_default)
-        species.push(response.data.front_shiny)
+        species.push(response.data.species.back_shiny)
+        species.push(response.data.species.front_default)
+        species.push(response.data.species.front_shiny)
         setData(species)
         console.log(species)
         })
