@@ -14,10 +14,10 @@ const Card = () => {
       .get("https://pokeapi.co/api/v2/pokemon/zapdos")
       .then((response) => {
         setDataSprites([
-          response.data.sprites.back_default,
-          response.data.sprites.back_shiny,
           response.data.sprites.front_default,
+          response.data.sprites.back_default,
           response.data.sprites.front_shiny,
+          response.data.sprites.back_shiny,
         ]);
         setName(response.data.species.name);
       })
@@ -34,13 +34,13 @@ const Card = () => {
   }, []);
 
   return loading ? (
-    <div>loading...</div>
+    <Container>loading...</Container>
   ) : (
     <Container>
       <Title>{name}</Title>
       <div>
-        {dataSprites?.map((s: string) => (
-          <Image key={s} alt={s} src={s} width={60} height={60} />
+        {dataSprites?.map((src: string) => (
+          <Image key={src} alt={src} src={src} width={60} height={60} />
         ))}
       </div>
     </Container>
