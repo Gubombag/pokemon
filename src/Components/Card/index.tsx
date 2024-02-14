@@ -1,60 +1,86 @@
 import React from "react";
-import {Container, Li, Ul} from "./styles"
+import { Container, ContainerForm, LabelInput, Title } from "./styles";
 import axios from "axios";
+import Image from "next/image";
+
+interface ILoadingData {
+  loading: boolean;
+  error: boolean;
+}
+
+const LoadingDataInitialState = {
+  loading: true,
+  error: false,
+};
 
 const Card = () => {
-    
-    const [dataSprites, setDataSprites] = React.useState<any>()
-    const [dataSpecies, setDataSpecies] = React.useState<any>()
-      
-    const fetchData = () => {
-        axios
-        .get("https://pokeapi.co/api/v2/pokemon/zapdos")
-        .then((response) => {
-        const sprites = []
-        sprites.push(response.data.sprites.back_default)
-        sprites.push(response.data.sprites.back_shiny)
-        sprites.push(response.data.sprites.front_default)
-        sprites.push(response.data.sprites.front_shiny)
-        setDataSprites(sprites)
-        })
-        .catch((error) => {
+  const [dataSprites, setDataSprites] = React.useState<string[]>([]);
+  const [name, setName] = React.useState<string>();
+  const [nameInput, setNameInput] = React.useState<string>("zapdos");
+  const [loadingData, setLoadingData] = React.useState<ILoadingData>(
+    LoadingDataInitialState
+  );
+
+  const fetchData = () => {
+    setLoadingData(LoadingDataInitialState);
+    axios
+      .get(`https://pokeapi.co/api/v2/pokemon/${nameInput}`)
+      .then((response) => {
+        setDataSprites([
+          response.data.sprites.front_default,
+          response.data.sprites.back_default,
+          response.data.sprites.front_shiny,
+          response.data.sprites.back_shiny,
+        ]);
+        setName(response.data.species.name);
+        setLoadingData({ error: false, loading: false });
+      })
+      .catch((error) => {
         console.error(error);
-        })
-    }
+        setLoadingData({ error: true, loading: false });
+      });
+  };
 
-    const fetchData1 = () => {
-        axios
-        .get("https://pokeapi.co/api/v2/pokemon/zapdos")
-        .then((response) => {
-            const species = [];
-            species.push(response.data.species.name);
-            species.push(response.data.species.url);
-            setDataSpecies(species);
-        })
-        .catch((error1) => {
-            console.error(error1);
-        })
-    }
-    
-React.useEffect(() => {
-    fetchData()
-}), []
+  React.useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-React.useEffect(() => {
-    fetchData1()
-}), []
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    fetchData();
+  };
 
-    return(
-        <>
-            <Container>
-                <Ul>
-                    <Li>{dataSprites}</Li><br></br>
-                    <Li>{dataSpecies}</Li>
-                </Ul>
-            </Container>
-        </>
-    )
-}
+  return (
+    <>
+      <ContainerForm>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <LabelInput>Write the {`pokemon's`} name and press enter</LabelInput>
+          <input
+            type="text"
+            value={nameInput}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNameInput(e.target.value)
+            }
+          />
+        </form>
+      </ContainerForm>
+      {loadingData.loading && !loadingData.error && (
+        <Container>loading...</Container>
+      )}
+      {loadingData.error && <Container>error!</Container>}
+      {!loadingData.loading && !loadingData.error && (
+        <Container>
+          <Title>{name}</Title>
+          <div>
+            {dataSprites?.map((src: string) => (
+              <Image key={src} alt={src} src={src} width={60} height={60} />
+            ))}
+          </div>
+        </Container>
+      )}
+    </>
+  );
+};
 
 export default Card;
