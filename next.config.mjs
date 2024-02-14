@@ -9,10 +9,7 @@ const nextConfig = {
         port: "",
       },
     ],
-  },
-  compiler: {
-    styledComponents: true,
-  },
+  }
 };
 
 export default nextConfig;
