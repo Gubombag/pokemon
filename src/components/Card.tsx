@@ -7,10 +7,11 @@ const Card = () => {
 
     const [dataSprites, setDataSprites] = React.useState<string[]>()
     const [names, setNames] = React.useState<string>()
+    const [nameInput, setNameInput] = React.useState<string>()
 
     const fetchData = () => {
         axios
-        .get("https://pokeapi.co/api/v2/pokemon/zapdos")
+        .get(`https://pokeapi.co/api/v2/pokemon/${nameInput}`)
         .then((response) => {
             setDataSprites([
                 response.data.sprites.back_default,
@@ -34,8 +35,27 @@ const Card = () => {
         console.log(names)
     })
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        fetchData();
+    }
+
     return(
         <Container>
+            <form onSubmit={(e => {
+                handleSubmit(e)
+            })}>
+                <input
+                    type="text"
+                    value={nameInput}
+                    onChange={
+                        (e: React.ChangeEvent<HTMLInputElement>) => {
+                            setNameInput(e.target.value)
+                        }
+                    }   
+                >
+                </input>
+            </form>
             <div>{names}</div>
             <div>
                 {dataSprites?.map((sprite: string) => (
