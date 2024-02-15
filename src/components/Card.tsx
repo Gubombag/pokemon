@@ -30,11 +30,6 @@ const Card = () => {
         fetchData()
     }, []);
 
-    React.useEffect(() => {
-        console.log(dataSprites)
-        console.log(names)
-    })
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         fetchData();
@@ -58,7 +53,7 @@ const Card = () => {
             </form>
             <div>{names}</div>
             <div>
-                {dataSprites?.map((sprite: string) => (
+                {dataSprites?.map((sprite) => (
                     <Image
                         src={sprite}
                         alt={sprite}
